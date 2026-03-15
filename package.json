@@ -1,5 +1,5 @@
 {
-  "name": "@bullpenm/ecourts",
+  "name": "@bullpenm/legal-case-scraper",
   "version": "0.1.0",
   "description": "The first open source Node.js library for Indian eCourts case data. Search by CNR, party name or advocate name.",
   "main": "src/index.js",
