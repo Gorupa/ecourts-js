@@ -1,5 +1,5 @@
 /**
- * ecourts-js v0.1.0
+ * @bullpenm/ecourts v0.1.0
  * The first open source Node.js library for
  * scraping Indian eCourts case data directly
  * from services.ecourts.gov.in
@@ -8,17 +8,17 @@
  * License: MIT
  *
  * Usage:
- *   const ecourts = require('ecourts-js');
+ * const ecourts = require('@bullpenm/ecourts');
  *
- *   const session  = await ecourts.createSession();
- *   const caseData = await ecourts.getCaseByCNR(session, 'MHAU010012342023');
- *   const states   = await ecourts.getStates(session);
+ * const session  = await ecourts.createSession();
+ * const caseData = await ecourts.getCaseByCNR(session, 'MHAU010012342023');
+ * const states   = await ecourts.getStates(session);
  *
  * DISCLAIMER:
- *   This library scrapes publicly available data from ecourts.gov.in.
- *   Use responsibly. Do not overload the servers. Add delays between
- *   requests. This is intended for non-commercial, research and civic
- *   tech purposes only.
+ * This library scrapes publicly available data from ecourts.gov.in.
+ * Use responsibly. Do not overload the servers. Add delays between
+ * requests. This is intended for non-commercial, research and civic
+ * tech purposes only.
  */
 
 'use strict';
@@ -44,6 +44,8 @@ async function createSession() {
 }
 
 module.exports = {
+    // Matches your package.json name and version
+    name: '@bullpenm/ecourts',
     version: '0.1.0',
 
     // Session management
