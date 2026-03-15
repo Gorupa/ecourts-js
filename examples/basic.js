@@ -1,14 +1,16 @@
 /**
- * ecourts-js — examples/basic.js
+ * @bullpenm/ecourts — examples/basic.js
  * Basic usage examples
  */
 
 'use strict';
 
+// This relative path is correct for local testing within the repo
 const ecourts = require('../src/index');
 
 async function main() {
-    console.log('ecourts-js v' + ecourts.version);
+    // Updated to reflect the new package identity
+    console.log('@bullpenm/ecourts v' + (ecourts.version || '0.1.0'));
     console.log('Creating session...');
 
     const session = await ecourts.createSession();
@@ -27,7 +29,6 @@ async function main() {
     console.log('First 5:', districts.slice(0, 5));
 
     // ── Example 3: CNR search ──
-    // Replace with a real CNR number to test
     // console.log('\n--- CNR Search ---');
     // const caseDetail = await ecourts.getCaseByCNR(session, 'MHAU010012342023');
     // console.log(JSON.stringify(caseDetail, null, 2));
@@ -40,15 +41,8 @@ async function main() {
     //     name:         'Sharma',
     // });
     // console.log(`Found ${cases.length} cases`);
-
-    // ── Example 5: Advocate search ──
-    // console.log('\n--- Advocate Search ---');
-    // const advCases = await ecourts.searchByAdvocate(session, {
-    //     stateCode:    '24',
-    //     districtCode: '1',
-    //     name:         'Mehta',
-    // });
-    // console.log(`Found ${advCases.length} cases`);
 }
 
-main().catch(console.error);
+main().catch(err => {
+    console.error('Error in @bullpenm/ecourts example:', err.message);
+});
