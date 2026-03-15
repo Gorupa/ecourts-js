@@ -21,6 +21,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Run basic test
+        run: node examples/basic.js
+        continue-on-error: true
+
       - name: Publish to npm
         run: npm publish
         env:
