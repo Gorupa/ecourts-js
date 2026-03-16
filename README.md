@@ -1,7 +1,6 @@
 # 🏛️ @bullpenm/legal-case-scraper
 
 ![npm version](https://img.shields.io/npm/v/@bullpenm/legal-case-scraper.svg?style=flat-square&color=blue)
-![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18.0.0-brightgreen.svg?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
 
