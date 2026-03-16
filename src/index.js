@@ -1,5 +1,5 @@
 /**
- * @bullpenm/ecourts v0.1.0
+ * @bullpenm/legal-case-scraper v0.1.0
  * The first open source Node.js library for
  * scraping Indian eCourts case data directly
  * from services.ecourts.gov.in
@@ -8,11 +8,11 @@
  * License: MIT
  *
  * Usage:
- * const ecourts = require('@bullpenm/ecourts');
+ * const scraper = require('@bullpenm/legal-case-scraper');
  *
- * const session  = await ecourts.createSession();
- * const caseData = await ecourts.getCaseByCNR(session, 'MHAU010012342023');
- * const states   = await ecourts.getStates(session);
+ * const session  = await scraper.createSession();
+ * const caseData = await scraper.getCaseByCNR(session, 'MHAU010012342023');
+ * const states   = await scraper.getStates(session);
  *
  * DISCLAIMER:
  * This library scrapes publicly available data from ecourts.gov.in.
@@ -37,7 +37,7 @@ const { getStates, getDistricts }     = require('./states');
  * @returns {object} session object
  *
  * @example
- * const session = await ecourts.createSession();
+ * const session = await scraper.createSession();
  */
 async function createSession() {
     return initSession();
@@ -45,7 +45,7 @@ async function createSession() {
 
 module.exports = {
     // Matches your package.json name and version
-    name: '@bullpenm/ecourts',
+    name: '@bullpenm/legal-case-scraper',
     version: '0.1.0',
 
     // Session management
