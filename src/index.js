@@ -1,8 +1,7 @@
 /**
  * @bullpenm/legal-case-scraper v0.1.0
- * The first open source Node.js library for
- * scraping Indian eCourts case data directly
- * from services.ecourts.gov.in
+ * The first open source Node.js library for scraping 
+ * Indian eCourts case data directly from services.ecourts.gov.in
  *
  * Author : gorupa (https://github.com/gorupa)
  * License: MIT
@@ -12,7 +11,7 @@
  *
  * const session  = await scraper.createSession();
  * const caseData = await scraper.getCaseByCNR(session, 'MHAU010012342023');
- * const states   = await scraper.getStates(session);
+ * const verifiedData = await scraper.getVerifiedCaseByCNR(session, 'MHAU010012342023');
  *
  * DISCLAIMER:
  * This library scrapes publicly available data from ecourts.gov.in.
@@ -23,11 +22,13 @@
 
 'use strict';
 
+// Import local modules
 const { initSession, refreshSession } = require('./session');
 const { getCaseByCNR }                = require('./cnr');
 const { searchByParty }               = require('./party');
 const { searchByAdvocate }            = require('./advocate');
 const { getStates, getDistricts }     = require('./states');
+const { getVerifiedCaseByCNR }        = require('./zk-proof');
 
 /**
  * Create a new eCourts session.
@@ -35,29 +36,29 @@ const { getStates, getDistricts }     = require('./states');
  * Refresh it if you encounter repeated errors.
  *
  * @returns {object} session object
- *
- * @example
- * const session = await scraper.createSession();
  */
 async function createSession() {
     return initSession();
 }
 
 module.exports = {
-    // Matches your package.json name and version
+    // Package Identity
     name: '@bullpenm/legal-case-scraper',
     version: '0.1.0',
 
-    // Session management
+    // Session Management
     createSession,
     refreshSession,
 
-    // Core search functions
+    // Core Search Functions (Standard Extraction)
     getCaseByCNR,
     searchByParty,
     searchByAdvocate,
 
-    // Metadata
+    // Core Search Functions (zkTLS Verified Extraction)
+    getVerifiedCaseByCNR,
+
+    // Location Metadata
     getStates,
     getDistricts,
 };
