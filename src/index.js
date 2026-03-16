@@ -1,5 +1,5 @@
 /**
- * @bullpenm/legal-case-scraper v0.1.0
+ * @bullpenm/legal-case-scraper v0.2.0
  * The first open source Node.js library for scraping 
  * Indian eCourts case data directly from services.ecourts.gov.in
  *
@@ -9,7 +9,7 @@
  * Usage:
  * const scraper = require('@bullpenm/legal-case-scraper');
  *
- * const session  = await scraper.createSession();
+ * const session  = await scraper.createSession('http://proxy-ip:port');
  * const caseData = await scraper.getCaseByCNR(session, 'MHAU010012342023');
  * const verifiedData = await scraper.getVerifiedCaseByCNR(session, 'MHAU010012342023');
  *
@@ -35,16 +35,18 @@ const { getVerifiedCaseByCNR }        = require('./zk-proof');
  * Call this once and reuse the session across multiple requests.
  * Refresh it if you encounter repeated errors.
  *
+ * @param {string|null} proxyUrl - Optional Indian proxy URL to bypass geo-blocks
  * @returns {object} session object
  */
-async function createSession() {
-    return initSession();
+async function createSession(proxyUrl = null) {
+    // Pass the proxy URL down to your session handler
+    return initSession(proxyUrl);
 }
 
 module.exports = {
     // Package Identity
     name: '@bullpenm/legal-case-scraper',
-    version: '0.1.0',
+    version: '0.2.0',
 
     // Session Management
     createSession,
