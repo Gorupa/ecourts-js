@@ -1,8 +1,7 @@
 # 🏛️ @bullpenm/legal-case-scraper
 
-![npm version](https://img.shields.io/npm/v/@bullpenm/legal-case-scraper.svg?style=flat-square&color=blue)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)
+[![npm](https://img.shields.io/npm/v/india-validators?style=for-the-badge&color=1a73e8)](https://www.npmjs.com/package/@bullpenm/legal-case-scraper)
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
 A powerful, open-source Node.js library for scraping and extracting Indian court case data directly from the official eCourts portal. Built specifically for civic tech, legal research, and automated case tracking.
 
