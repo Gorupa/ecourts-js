@@ -1,38 +1,87 @@
 'use strict';
 
+/**
+
+* @bullpenm/legal-case-scraper
+* Main entry file
+* 
+* Author : gorupa
+* License: MIT
+  */
+
+/* ─────────────────────────────────────────────
+IMPORT CORE MODULES
+───────────────────────────────────────────── */
+
 const { initSession, refreshSession } = require('./session');
+
 const { getCaseByCNR } = require('./cnr');
+
 const { searchByParty } = require('./party');
+
 const { searchByAdvocate } = require('./advocate');
+
 const { getStates, getDistricts } = require('./states');
 
-/**
- * Lazy loader for zkTLS proof module.
- * Prevents tlsn-js from crashing Node environments
- * unless the proof function is explicitly used.
- */
-async function getVerifiedCaseByCNR(session, cnr) {
-    const { getVerifiedCaseByCNR } = require('./zk-proof');
-    return getVerifiedCaseByCNR(session, cnr);
-}
+/* ─────────────────────────────────────────────
+SESSION CREATION
+───────────────────────────────────────────── */
 
 async function createSession(proxyUrl = null) {
-    return initSession(proxyUrl);
+return initSession(proxyUrl);
 }
 
+/* ─────────────────────────────────────────────
+zkTLS PROOF (LAZY LOADED)
+Prevents Node crash when tlsn-js loads
+───────────────────────────────────────────── */
+
+async function getVerifiedCaseByCNR(session, cnrNumber) {
+
+const { getVerifiedCaseByCNR } = require('./zk-proof');
+
+return getVerifiedCaseByCNR(session, cnrNumber);
+
+}
+
+/* ─────────────────────────────────────────────
+PACKAGE EXPORTS
+───────────────────────────────────────────── */
+
 module.exports = {
-    name: '@bullpenm/legal-case-scraper',
-    version: '0.2.0',
 
-    createSession,
-    refreshSession,
+/* Package metadata */
 
-    getCaseByCNR,
-    searchByParty,
-    searchByAdvocate,
+name: '@bullpenm/legal-case-scraper',
 
-    getVerifiedCaseByCNR,
+version: '0.2.1',
 
-    getStates,
-    getDistricts
+
+/* Session management */
+
+createSession,
+
+refreshSession,
+
+
+/* Standard extraction */
+
+getCaseByCNR,
+
+searchByParty,
+
+searchByAdvocate,
+
+
+/* zkTLS verified extraction */
+
+getVerifiedCaseByCNR,
+
+
+/* Location metadata */
+
+getStates,
+
+getDistricts
+
 };
