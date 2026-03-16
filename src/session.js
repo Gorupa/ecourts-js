@@ -1,7 +1,7 @@
 /**
  * ecourts-js — src/session.js
  * Manages HTTP sessions, cookies and app tokens
- * for the eCourts portal.
+ * for the eCourts portal. Includes proxy support for bypassing geo-blocks.
  *
  * Author : gorupa (https://github.com/gorupa)
  * License: MIT
@@ -12,16 +12,19 @@
 const axios   = require('axios');
 const tough   = require('tough-cookie');
 const { wrapper } = require('axios-cookiejar-support');
+const { HttpsProxyAgent } = require('https-proxy-agent'); // <-- Added Proxy Agent
 
 const BASE_URL = 'https://services.ecourts.gov.in/ecourtindia_v6';
 
 /**
  * Create a new axios instance with cookie jar support
  * This maintains session state across requests
+ * @param {string|null} proxyUrl - Optional proxy URL
  */
-function createClient() {
+function createClient(proxyUrl = null) {
     const jar    = new tough.CookieJar();
-    const client = wrapper(axios.create({
+    
+    const config = {
         jar,
         baseURL:        BASE_URL,
         timeout:        20000,
@@ -34,7 +37,16 @@ function createClient() {
             'Connection':      'keep-alive',
             'Referer':         `${BASE_URL}/`,
         },
-    }));
+    };
+
+    // <-- Attach the Proxy Agent if a URL is provided
+    if (proxyUrl) {
+        const agent = new HttpsProxyAgent(proxyUrl);
+        config.httpsAgent = agent;
+        config.httpAgent = agent;
+    }
+
+    const client = wrapper(axios.create(config));
     return { client, jar };
 }
 
@@ -42,10 +54,12 @@ function createClient() {
  * Initialize a session — visits the homepage to
  * get session cookies and extract the app_token.
  *
- * @returns {{ client, jar, appToken }}
+ * @param {string|null} proxyUrl - Optional proxy URL
+ * @returns {{ client, jar, appToken, proxyUrl }}
  */
-async function initSession() {
-    const { client, jar } = createClient();
+async function initSession(proxyUrl = null) {
+    // Pass the proxy URL down to the client creator
+    const { client, jar } = createClient(proxyUrl);
 
     const res = await client.get('/');
     const html = res.data;
@@ -54,7 +68,8 @@ async function initSession() {
     const tokenMatch = html.match(/app_token['":\s]+['"]([a-zA-Z0-9]+)['"]/);
     const appToken   = tokenMatch ? tokenMatch[1] : null;
 
-    return { client, jar, appToken };
+    // Return proxyUrl so we can reuse it during a refresh
+    return { client, jar, appToken, proxyUrl };
 }
 
 /**
@@ -74,10 +89,12 @@ async function fetchCaptcha(session) {
  * Refresh session — re-init if token expired
  */
 async function refreshSession(session) {
-    const fresh = await initSession();
+    // Reuse the exact same proxy if the session drops
+    const fresh = await initSession(session.proxyUrl); 
     session.client   = fresh.client;
     session.jar      = fresh.jar;
     session.appToken = fresh.appToken;
+    session.proxyUrl = fresh.proxyUrl;
     return session;
 }
 
