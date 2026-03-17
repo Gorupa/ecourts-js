@@ -12,7 +12,6 @@
 const axios   = require('axios');
 const tough   = require('tough-cookie');
 const { wrapper } = require('axios-cookiejar-support');
-const { HttpsProxyAgent } = require('https-proxy-agent'); // <-- Added Proxy Agent
 
 const BASE_URL = 'https://services.ecourts.gov.in/ecourtindia_v6';
 
@@ -39,11 +38,26 @@ function createClient(proxyUrl = null) {
         },
     };
 
-    // <-- Attach the Proxy Agent if a URL is provided
+    // <-- FIXED: Use native Axios proxy config to avoid Agent clashes
     if (proxyUrl) {
-        const agent = new HttpsProxyAgent(proxyUrl);
-        config.httpsAgent = agent;
-        config.httpAgent = agent;
+        try {
+            const proxy = new URL(proxyUrl);
+            config.proxy = {
+                protocol: proxy.protocol.replace(':', ''), // e.g., 'http'
+                host: proxy.hostname,
+                port: parseInt(proxy.port, 10)
+            };
+            
+            // Add auth if proxy requires a username/password
+            if (proxy.username && proxy.password) {
+                config.proxy.auth = {
+                    username: proxy.username,
+                    password: proxy.password
+                };
+            }
+        } catch (err) {
+            console.warn('Invalid proxy URL provided, falling back to direct connection:', err.message);
+        }
     }
 
     const client = wrapper(axios.create(config));
@@ -58,7 +72,6 @@ function createClient(proxyUrl = null) {
  * @returns {{ client, jar, appToken, proxyUrl }}
  */
 async function initSession(proxyUrl = null) {
-    // Pass the proxy URL down to the client creator
     const { client, jar } = createClient(proxyUrl);
 
     const res = await client.get('/');
@@ -68,7 +81,6 @@ async function initSession(proxyUrl = null) {
     const tokenMatch = html.match(/app_token['":\s]+['"]([a-zA-Z0-9]+)['"]/);
     const appToken   = tokenMatch ? tokenMatch[1] : null;
 
-    // Return proxyUrl so we can reuse it during a refresh
     return { client, jar, appToken, proxyUrl };
 }
 
@@ -89,7 +101,6 @@ async function fetchCaptcha(session) {
  * Refresh session — re-init if token expired
  */
 async function refreshSession(session) {
-    // Reuse the exact same proxy if the session drops
     const fresh = await initSession(session.proxyUrl); 
     session.client   = fresh.client;
     session.jar      = fresh.jar;
