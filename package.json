@@ -1,7 +1,12 @@
 {
   "name": "@bullpenm/legal-case-scraper",
+<<<<<<< HEAD
   "version": "0.1.0",
   "description": "The first open source Node.js library for Indian eCourts case data.",
+=======
+  "version": "0.2.0",
+  "description": "The first open source Node.js library for Indian eCourts case data. Search by CNR, party name or advocate name.",
+>>>>>>> 495f4f0a08dc8b7ff735213c1128e55b57dede47
   "main": "src/index.js",
   "author": "gorupa",
   "license": "MIT",
@@ -10,11 +15,17 @@
     "axios": "^1.6.0",
     "axios-cookiejar-support": "^4.0.7",
     "cheerio": "^1.0.0",
+    "https-proxy-agent": "^7.0.2",
     "qs": "^6.12.0",
     "sharp": "^0.33.0",
     "tesseract.js": "^5.0.4",
+<<<<<<< HEAD
     "tough-cookie": "^4.1.3",
     "ws": "^8.19.0"
+=======
+    "tlsn-js": "latest",
+    "tough-cookie": "^4.1.3"
+>>>>>>> 495f4f0a08dc8b7ff735213c1128e55b57dede47
   },
   "publishConfig": {
     "access": "public"
